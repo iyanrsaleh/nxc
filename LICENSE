@@ -1,0 +1,37 @@
+NXC SDK — Proprietary License
+
+Copyright (c) 2026 iyanrsaleh. All rights reserved.
+
+The NXC SDK (headers, libraries, binaries, CMake package files, resources, and
+documentation distributed through https://github.com/iyanrsaleh/nxc and its
+Releases) and the create-nxc-app tool are proprietary software.
+
+Permission is granted, free of charge, to any person obtaining a copy of the
+NXC SDK to:
+
+  1. use the SDK to develop, build, and test applications; and
+  2. distribute the NXC runtime libraries (nxc.dll, nxc_database.dll,
+     nxc_websocket.dll and their debug variants) solely as part of an
+     application that dynamically links against them.
+
+The following are NOT permitted without prior written permission from the
+copyright holder:
+
+  - redistributing the SDK itself, in whole or in part, other than as
+    described in (2);
+  - modifying, decompiling, disassembling, or reverse engineering the NXC
+    libraries, except to the extent such restriction is prohibited by
+    applicable law (including the rights granted by the LGPL to relink
+    against modified versions of Qt);
+  - removing or altering this notice.
+
+Third-party components are licensed under their own terms; see
+THIRD-PARTY-NOTICES.txt. Nothing in this license restricts rights granted by
+those licenses.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
