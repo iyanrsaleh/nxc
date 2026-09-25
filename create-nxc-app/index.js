@@ -255,20 +255,39 @@ async function sdkFromArchive(source) {
     return dest;
 }
 
+function sdkAssets(release) {
+    return (release.assets || [])
+        .map((a) => ({ url: a.browser_download_url, m: a.name.match(ASSET_PATTERN) }))
+        .filter((a) => a.m && a.m[3] === sdkOs());
+}
+
 async function sdkFromRelease(repo, qtVersion) {
     console.log(`Mencari rilis SDK terbaru di github.com/${repo} ...`);
-    let release;
+    // Utamakan rilis stabil terbaru (/releases/latest). Endpoint itu
+    // mengabaikan pre-release — kalau belum ada rilis stabil (404) atau rilis
+    // stabil tidak membawa SDK untuk OS ini, pakai rilis terbaru (termasuk
+    // pre-release) yang punya aset SDK.
+    let release = null;
     try {
         release = await fetchJson(`https://api.github.com/repos/${repo}/releases/latest`);
     } catch (e) {
-        fail(`tidak bisa membaca rilis ${repo}: ${e.message}`);
+        if (!/HTTP 404/.test(e.message))
+            fail(`tidak bisa membaca rilis ${repo}: ${e.message}`);
     }
-    const assets = (release.assets || [])
-        .map((a) => ({ url: a.browser_download_url, m: a.name.match(ASSET_PATTERN) }))
-        .filter((a) => a.m && a.m[3] === sdkOs());
-    if (!assets.length) {
-        fail(`rilis ${release.tag_name} di ${repo} tidak punya SDK untuk ${sdkOs()}`);
+    if (!release || !sdkAssets(release).length) {
+        let releases;
+        try {
+            releases = await fetchJson(`https://api.github.com/repos/${repo}/releases?per_page=20`);
+        } catch (e) {
+            fail(`tidak bisa membaca rilis ${repo}: ${e.message}`);
+        }
+        const withSdk = (releases || []).find((r) => !r.draft && sdkAssets(r).length);
+        if (!withSdk)
+            fail(`belum ada rilis di ${repo} yang membawa SDK untuk ${sdkOs()}`);
+        release = withSdk;
     }
+    console.log(`Rilis: ${release.tag_name}${release.prerelease ? ' (pre-release)' : ''}`);
+    const assets = sdkAssets(release);
     // Utamakan SDK yang dibangun dengan Qt major.minor sama dengan kit developer.
     const mm = (v) => (v || '').split('.').slice(0, 2).join('.');
     const pick = assets.find((a) => qtVersion && mm(a.m[2]) === mm(qtVersion)) || assets[0];
