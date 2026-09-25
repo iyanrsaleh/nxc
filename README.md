@@ -1,8 +1,8 @@
 # NXC — SDK aplikasi desktop native C++ (Qt 6)
 
-Padanan "Electron-style" untuk C++, tapi **native, tanpa Chromium/Node**:
-aplikasi desktop berbentuk satu binary C++ di atas Qt 6 Widgets, dengan
-fondasi yang sudah jadi.
+SDK untuk membangun aplikasi desktop **native C++** di atas Qt 6 Widgets:
+satu binary yang ringan, dengan fondasi aplikasi yang sudah jadi — window,
+terminal, tema, shortcut, database, dan lainnya.
 
 | Yang disediakan SDK | Header |
 |---|---|

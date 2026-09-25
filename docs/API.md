@@ -214,7 +214,7 @@ VT untuk ditampilkan — `nxc::Terminal` memakainya.
 ## `<nxc/Terminal.h>` — `nxc::Terminal`
 
 Terminal UI (Foundation §7.4): **satu area** tempat pengguna mengetik langsung,
-seperti PowerShell/cmd/xterm — padanan xterm.js + node-pty di Electron.
+seperti PowerShell/cmd/xterm.
 `TerminalProcess` mode `PseudoTerminal` + emulator VT internal (warna 16/256/
 truecolor, kursor, layar alternatif, scrollback). Shell sendiri yang meng-echo,
 mengelola riwayat ↑/↓, Tab-completion, prompt PSReadLine; `vim`/`htop` jalan.
