@@ -62,6 +62,16 @@ public:
 | `setResizeMargin(px)` | Lebar zona tepi transparan untuk resize (default 6; **bukan** border/padding — konten selalu flush ke tepi; zona disembunyikan saat maximize/fullscreen) |
 | `toggleMaximize()` | Maksimal/restore; `maximizedChanged(bool)` memberi tahu title bar |
 | `icon` | Ikon title bar (default `Theme::appIcon()`) |
+| `menuBar()` | *(SDK ≥ 0.3.2)* Menu bar **di dalam title bar** ala VS Code — `[ikon][File Edit View …][judul di tengah][min max close]`. Dibuat saat pertama dipanggil, sudah bergaya tema (`#TitleMenuBar`, gelap/terang). |
+| `setTitleBarWidget(QWidget*)` / `titleBarWidget()` | *(SDK ≥ 0.3.2)* Widget bebas di title bar setelah ikon (dasar `menuBar()`); judul pindah ke tengah; area kosong tetap drag / double-click maximize; `nullptr` = tata letak standar, widget lama dihapus |
+
+Menu bar di title bar (satu baris, tanpa baris menu terpisah):
+
+```cpp
+auto* file = menuBar()->addMenu(tr("&File"));
+file->addAction(tr("&Open…"), QKeySequence::Open, this, &MainWindow::open);
+menuBar()->addMenu(tr("&Help"))->addAction(tr("About"), this, &MainWindow::about);
+```
 
 Perilaku bawaan: `Qt::FramelessWindowHint`, tombol min/max/close, drag title
 bar (`startSystemMove`), sudut membulat + drop shadow via
