@@ -6,12 +6,72 @@ satu perintah:
 ```bash
 npm create nxc-app@latest MyApp
 cd MyApp
-cmake --preset default          # Linux/macOS: cmake --preset debug
-cmake --build --preset debug
-build\Debug\MyApp.exe           # Linux/macOS: ./build/debug/MyApp
+npm run dev
 ```
 
-Tanpa dependency npm — hanya modul bawaan Node (≥ 18).
+Tanpa dependency npm — hanya modul bawaan Node (≥ 18). Tidak perlu
+`npm install` di project hasilnya.
+
+## Perintah di project
+
+| Perintah | Fungsi |
+|---|---|
+| `npm run dev` (= `npm start`) | Build Debug lalu jalankan aplikasi |
+| `npm run build` | Build Debug |
+| `npm run release` | Build Release |
+| `npm run dist` | Build Release → **installer** `dist/<artifactName>` (Windows + Inno Setup), atau zip portable berisi exe + semua DLL/plugin (`npm run dist -- --zip`, atau bila Inno Setup belum terpasang) |
+| `npm run clean` | Hapus `build/` dan `dist/` |
+
+## Identitas aplikasi di `package.json`
+
+Cukup isi variabel — build memakainya otomatis (seperti electron-builder):
+
+```json
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "productName": "My App",
+  "description": "Aplikasi saya",
+  "author": "Nama Kamu",
+  "nxc": {
+    "icon": "assets/icon.png",
+    "shortcutName": "My App",
+    "artifactName": "myapp-setup-${version}.${ext}"
+  }
+}
+```
+
+| Variabel | Dipakai untuk |
+|---|---|
+| `version` | Versi file exe & installer (klik kanan → Properties → Details), `QApplication::applicationVersion()`, `${version}` |
+| `productName` | Nama aplikasi & judul jendela, nama produk exe/installer, folder instalasi, Apps & features |
+| `description` | Deskripsi file exe |
+| `author` | Perusahaan & copyright exe, publisher installer |
+| `nxc.icon` | Ikon exe (Explorer/taskbar), jendela, title bar, tray, dan setup.exe — `.png` diubah ke `.ico` otomatis |
+| `nxc.shortcutName` | Nama shortcut Start Menu (dan Desktop, opsional saat install) |
+| `nxc.artifactName` | Nama file installer: `${name}`, `${productName}`, `${version}`, `${ext}`, `${os}`, `${arch}` |
+| `nxc.appId` | Identitas unik installer (dibuat otomatis) — jangan diubah setelah rilis; dipakai untuk upgrade & uninstall |
+
+Ubah → `npm run release`/`dist` lagi; CMake mendeteksi perubahan `package.json`
+dan ikon sendiri. Identitas ini dibaca `cmake/NxcApp.cmake`, jadi berlaku juga
+saat memakai `cmake` langsung.
+
+### Installer (setup.exe)
+
+`npm run dist` membuat installer dengan **Inno Setup** (gratis) — pasang sekali:
+
+```bash
+winget install JRSoftware.InnoSetup
+```
+
+Installer: wizard modern, install per-user tanpa admin (bisa pilih semua user),
+shortcut Start Menu + Desktop (opsional), uninstaller di Settings → Apps,
+ikon & versi dari `package.json`. Lokasi ISCC.exe lain: env `INNO_SETUP_ISCC`.
+
+Semuanya dijalankan `scripts/nxc.mjs` di project itu sendiri (Node murni)
+di atas `CMakePresets.json`. Tetap bisa memakai CMake langsung:
+`cmake --preset default` lalu `cmake --build --preset debug`
+(Linux/macOS: `cmake --preset debug`).
 
 ## Prasyarat
 
@@ -51,6 +111,10 @@ dari `sdk.json` di SDK), muncul peringatan.
 MyApp/
 ├── CMakeLists.txt       find_package(nxc) + nxc_deploy()
 ├── CMakePresets.json    CMAKE_PREFIX_PATH = SDK + Qt (sudah terisi)
+├── package.json         identitas app + npm run dev | build | release | dist | clean
+├── scripts/nxc.mjs      penggerak perintah npm + installer (tanpa dependency)
+├── cmake/NxcApp.cmake   versi/nama/ikon exe dari package.json
+├── assets/icon.png      ikon aplikasi (ganti dengan milikmu)
 ├── README.md
 ├── .gitignore
 └── src/

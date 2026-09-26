@@ -35,10 +35,15 @@ Referensi lengkap: [`docs/API.md`](docs/API.md) · panduan pemakaian SDK:
 ```bash
 npm create nxc-app@latest MyApp
 cd MyApp
-cmake --preset default
-cmake --build --preset debug
-build\Debug\MyApp.exe
+npm run dev        # build Debug + jalankan
+npm run dist       # installer: dist/myapp-setup-0.1.0.exe (butuh Inno Setup)
 ```
+
+Perintah lain di project: `npm run build`, `npm run release`, `npm run clean`.
+Nama, versi, ikon, shortcut, dan nama installer diatur di `package.json`
+(`productName`, `version`, `nxc.icon`, `nxc.shortcutName`, `nxc.artifactName`) —
+lihat [`create-nxc-app/README.md`](create-nxc-app/README.md). Installer memakai
+Inno Setup (`winget install JRSoftware.InnoSetup`).
 
 `create-nxc-app` membuat project (CMakeLists, CMakePresets, `src/`), mencari
 kit Qt otomatis, dan mengunduh SDK dari

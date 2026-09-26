@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(@NAME@ VERSION 0.1.0 LANGUAGES CXX)
+project(@NAME@ LANGUAGES CXX)
+
+# Resource Windows (.rc): versi & ikon file exe dari package.json.
+if(WIN32)
+    enable_language(RC)
+endif()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -28,6 +33,11 @@ set_target_properties(@NAME@ PROPERTIES
 if(MSVC)
     target_compile_options(@NAME@ PRIVATE /utf-8 /W4 /permissive-)
 endif()
+
+# Versi, nama produk, deskripsi, author, dan ikon dari package.json
+# (lihat cmake/NxcApp.cmake) — ubah di package.json, bukan di sini.
+include(cmake/NxcApp.cmake)
+nxc_app_from_package(@NAME@)
 
 # Dari SDK: salin nxc.dll + windeployqt setelah build -> exe langsung jalan.
 nxc_deploy(@NAME@)

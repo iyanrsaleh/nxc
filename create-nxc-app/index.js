@@ -8,6 +8,7 @@
 // templates/default/ (dipakai bersama tools/new-app.ps1).
 'use strict';
 
+const crypto = require('crypto');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -383,6 +384,11 @@ function copyTemplate(src, dest, vars) {
             copyTemplate(from, to, vars);
             continue;
         }
+        // File biner (ikon) disalin apa adanya — bukan teks bertemplate.
+        if (/\.(png|ico|jpg|jpeg|bmp)$/i.test(entry.name)) {
+            fs.copyFileSync(from, to);
+            continue;
+        }
         let text = fs.readFileSync(from, 'utf8');
         for (const [key, value] of Object.entries(vars)) text = text.split(`@${key}@`).join(value);
         fs.writeFileSync(to, text);
@@ -414,7 +420,15 @@ async function main() {
     const prefixPath = [sdk, qt].filter(Boolean).join(';').split('\\').join('/');
     const steps = buildSteps(name);
 
-    copyTemplate(TEMPLATE_DIR, root, { NAME: name, BUILD_STEPS: steps.join('\n') });
+    copyTemplate(TEMPLATE_DIR, root, {
+        NAME: name,
+        // Nama paket npm wajib huruf kecil (package.json template).
+        PACKAGE_NAME: name.toLowerCase(),
+        // Identitas unik installer (Inno Setup AppId): upgrade & uninstall
+        // mengenali aplikasi yang sama walau nama/versinya berubah.
+        APP_ID: crypto.randomUUID().toUpperCase(),
+        BUILD_STEPS: steps.join('\n'),
+    });
     fs.writeFileSync(path.join(root, 'CMakePresets.json'),
         `${JSON.stringify(presets(prefixPath), null, 2)}\n`);
 
@@ -423,7 +437,8 @@ async function main() {
     console.log(`  Qt  : ${qt ? `${qt}${qtVersion ? ` (${qtVersion})` : ''}` : '(tidak terdeteksi)'}`);
     console.log('\nLangkah berikutnya:');
     console.log(`  cd ${name}`);
-    for (const s of steps) console.log(`  ${s}`);
+    console.log('  npm run dev        (build Debug + jalankan)');
+    console.log('\nPerintah lain: npm run build | release | dist | clean  (lihat README.md)');
 }
 
 main().catch((e) => fail(e.stack || String(e)));

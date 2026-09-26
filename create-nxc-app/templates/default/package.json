@@ -1,0 +1,23 @@
+{
+  "name": "@PACKAGE_NAME@",
+  "version": "0.1.0",
+  "productName": "@NAME@",
+  "description": "@NAME@ - aplikasi desktop native C++ di atas SDK NXC",
+  "author": "",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/nxc.mjs dev",
+    "start": "node scripts/nxc.mjs dev",
+    "build": "node scripts/nxc.mjs build",
+    "release": "node scripts/nxc.mjs build --release",
+    "dist": "node scripts/nxc.mjs dist",
+    "clean": "node scripts/nxc.mjs clean"
+  },
+  "nxc": {
+    "target": "@NAME@",
+    "icon": "assets/icon.png",
+    "shortcutName": "@NAME@",
+    "artifactName": "${name}-setup-${version}.${ext}",
+    "appId": "@APP_ID@"
+  }
+}

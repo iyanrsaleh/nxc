@@ -1,6 +1,6 @@
 {
   "name": "create-nxc-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Buat project aplikasi desktop native C++ (Qt 6) di atas SDK NXC",
   "bin": {
     "create-nxc-app": "index.js"

@@ -1,10 +1,12 @@
 #include "mainwindow.h"
 
+#include <QApplication>
 #include <QLabel>
 #include <QVBoxLayout>
 
 MainWindow::MainWindow() {
-    setTitle(QStringLiteral("@NAME@"));
+    // Judul = productName di package.json (lewat nama aplikasi Qt).
+    setTitle(QApplication::applicationName());
 
     auto* body = new QWidget(this);
     auto* layout = new QVBoxLayout(body);
