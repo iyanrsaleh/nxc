@@ -261,6 +261,80 @@ penuh). Belum: pelaporan mouse ke program (klik di vim), reflow saat resize
 
 ---
 
+## `<nxc/Router.h>` — `nxc::Router`, `nxc::Route`, `nxc::Page`, `nxc::Link` (SDK ≥ 0.3.0)
+
+Routing halaman — padanan React/Vue Router untuk aplikasi native: satu area
+konten yang berganti halaman menurut path, dengan riwayat back/forward. API
+publik: boleh dipakai di mana saja (jendela utama, jendela kedua, dialog,
+sebagian area, beberapa router sekaligus).
+
+```cpp
+auto* router = new nxc::Router(this);
+router->addRoute("/",           [] { return new HomePage; });
+router->addRoute("/produk/:id", [](const nxc::Route& r) { return new ProdukPage(r.param("id")); });
+router->addRoute("/docs/*",     [](const nxc::Route& r) { return new DocsPage(r.param("*")); });
+router->setNotFound([](const nxc::Route& r) { return new NotFoundPage(r.path()); });
+setContent(router);
+router->navigate("/");
+
+layout->addWidget(new nxc::Link(tr("Produk 42"), "/produk/42"));   // link
+nxc::Router::connectLinks(label);                                   // <a href="/...">
+nxc::Router::go("/pengaturan");                                     // dari tombol/menu
+```
+
+| Anggota | Keterangan |
+| ------- | ---------- |
+| `addRoute(pola, factory)` | Pola `/`, `/produk`, `/produk/:id`, `/docs/*` (sisa path → param `"*"`). Segmen statis menang atas `:param`; wildcard paling akhir. Factory menerima `Route` (atau tanpa argumen) dan mengembalikan widget halaman |
+| `setNotFound(factory)` | Halaman bila tidak ada rute cocok (default: "Halaman tidak ditemukan") |
+| `navigate(path)` / `replace(path)` | Path harus diawali `/`, boleh `?query`. `navigate` menambah riwayat (riwayat maju dibuang), `replace` mengganti entri saat ini; path sama = tanpa efek |
+| `back()` / `forward()` / `canGoBack()` / `canGoForward()` | Riwayat; juga **Alt+←/→** dan tombol samping mouse |
+| `currentRoute()` / `currentPage()` / `match(path)` | Rute & widget aktif; `match` mencocokkan tanpa navigasi |
+| `static of(widget)` | Router terdekat di rantai induk (atau di jendela yang sama) |
+| `static go(path)` | Navigasi pada router jendela aktif |
+| `static connectLinks(label)` | `<a href="/...">` di QLabel → navigasi; link lain (http, mailto) dibuka browser |
+| signal `routeChanged(route)`, `historyChanged()` | + event EventBus `route.changed` `{path, from}` |
+
+`nxc::Route`: `path()` (tanpa query), `fullPath()`, `pattern()` (kosong = not
+found), `param(nama)`, `params()`, `query(nama)`, `queryItems()` — nilai sudah
+di-decode (`%20` → spasi).
+
+`nxc::Page` (opsional, turunan `QWidget`): `onEnter(route)` tiap kali aktif
+(termasuk query baru pada path sama), `onLeave()`, `setTitle()` (header
+NavigationView), `setKeepAlive(true)` = instance disimpan saat ditinggal
+(scroll/isian tetap) — default halaman dihapus dan dibuat ulang.
+
+`nxc::Link` (QLabel): klik → navigasi; objectName `NxcLink`, properti `active`
+saat path-nya aktif (QSS `#NxcLink[active="true"]`).
+
+## `<nxc/NavigationView.h>` — `nxc::NavigationView` (SDK ≥ 0.3.0)
+
+Sidebar navigasi Fluent (ala Settings Windows 11) + area halaman berisi
+`nxc::Router`.
+
+```cpp
+auto* nav = new nxc::NavigationView(this);
+nav->addItem(tr("Home"), "/", nxc::Glyph::Home);
+nav->addItem(tr("Produk"), "/produk", nxc::Glyph::Box);          // aktif juga di /produk/42
+nav->addFooterItem(tr("Pengaturan"), "/pengaturan", nxc::Glyph::Settings);
+nav->router()->addRoute("/", [] { return new HomePage; });
+setContent(nav);
+nav->router()->navigate("/");
+```
+
+| Anggota | Keterangan |
+| ------- | ---------- |
+| `router()` | Router di dalamnya — daftarkan rute di sini |
+| `addItem(teks, path, glyph \| QIcon)` / `addFooterItem(...)` / `addSeparator()` | Item menu atas / bawah. Glyph = kode Fluent System Icons (`nxc::Glyph::Home/Box/Settings/Info/...`, warnanya ikut tema) atau `QIcon` biasa |
+| `activePath()` | Item aktif = awalan path terpanjang (`/produk` untuk `/produk/42`; `/` hanya persis) |
+| `setCompact(bool)` / `isCompact()` / signal `compactChanged` | Pane ikon saja (juga lewat tombol ☰) |
+
+Header halaman = `Page::title()` bila ada (ikut berubah saat judul diganti),
+selain itu teks item aktif. Tombol Back aktif bila ada riwayat. Gaya QSS:
+`#NavigationPane`, `#NavItem[active="true"]`, `#NavIndicator`, `#NavHeader`,
+`#NavButton`.
+
+---
+
 ## `<nxc/Dialog.h>` — `nxc::Dialog`
 
 Dialog standar: area isi + button box Ok/Cancel yang sudah tersambung.

@@ -318,8 +318,16 @@ async function resolveSdk(args, qtVersion) {
          '  --repo <owner/nama>  (unduh dari GitHub Release)');
 }
 
+// Template memakai API yang baru ada sejak versi SDK ini (nxc::Router).
+const MIN_SDK = '0.3.0';
+
 function checkSdk(sdk, qtVersion) {
     const manifest = readSdkManifest(sdk);
+    if (manifest && compareVersions(manifest.version || '0', MIN_SDK) < 0) {
+        fail(`SDK NXC ${manifest.version} di ${sdk} terlalu lama - template ini butuh ` +
+             `SDK >= ${MIN_SDK} (nxc::Router / NavigationView). Pakai rilis terbaru ` +
+             '(tanpa --sdk) atau bangun ulang SDK.');
+    }
     const mm = (v) => (v || '').split('.').slice(0, 2).join('.');
     if (manifest && qtVersion && mm(manifest.qt) !== mm(qtVersion)) {
         warn(`SDK dibangun dengan Qt ${manifest.qt}, kit kamu Qt ${qtVersion} - ` +

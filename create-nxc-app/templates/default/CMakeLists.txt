@@ -21,6 +21,8 @@ qt_add_executable(@NAME@
     src/main.cpp
     src/mainwindow.h
     src/mainwindow.cpp
+    src/pages.h
+    src/pages.cpp
 )
 
 target_link_libraries(@NAME@ PRIVATE nxc::nxc Qt6::Widgets)

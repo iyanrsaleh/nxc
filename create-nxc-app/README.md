@@ -56,6 +56,25 @@ Ubah → `npm run release`/`dist` lagi; CMake mendeteksi perubahan `package.json
 dan ikon sendiri. Identitas ini dibaca `cmake/NxcApp.cmake`, jadi berlaku juga
 saat memakai `cmake` langsung.
 
+### Paket npm untuk skrip Node (`nxc::NodeRuntime`)
+
+Taruh dependensi skrip di **`runtime/package.json`** (bukan `package.json` di
+root — itu khusus build). `npm run dev|build|dist` otomatis menjalankan
+`npm install --omit=dev` di `runtime/` bila belum terpasang atau berubah.
+Salin `runtime/` (termasuk `node_modules`) ke sebelah exe di CMakeLists.txt:
+
+```cmake
+add_custom_target(MyApp_runtime ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_CURRENT_SOURCE_DIR}/runtime $<TARGET_FILE_DIR:MyApp>/runtime)
+add_dependencies(MyApp_runtime MyApp)
+```
+
+Dengan begitu `require()` tetap jalan setelah di-install (paket ikut
+installer). Kalau dependensi ditaruh di root project, `require` hanya jalan
+saat development lalu gagal di komputer pengguna. Pengguna akhir tetap butuh
+Node.js terpasang; hindari paket bermodul native (`.node`) bila bisa.
+
 ### Installer (setup.exe)
 
 `npm run dist` membuat installer dengan **Inno Setup** (gratis) — pasang sekali:
@@ -120,7 +139,9 @@ MyApp/
 └── src/
     ├── main.cpp         nxc::Application
     ├── mainwindow.h
-    └── mainwindow.cpp   MainWindow : nxc::Window
+    ├── mainwindow.cpp   MainWindow : nxc::Window + NavigationView (sidebar + Router)
+    ├── pages.h
+    └── pages.cpp        halaman Home / Produk / Produk :id / Pengaturan (nxc::Page)
 ```
 
 Template ada di `templates/default/` dan dipakai juga oleh

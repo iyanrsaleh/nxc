@@ -38,7 +38,7 @@ internal — cukup `find_package(nxc)` terhadap folder `nxc-sdk/`.
 | `#include` langsung ke `src/*.h` | ✅ (di dalam library) | ❌ **dilarang** |
 | Build | `build.bat` / CMake root | CMake biasa + `find_package(nxc)` |
 | Titik masuk `main()` | tidak ada di library | **di project developer sendiri** |
-| Test | `tests/` (17 suite ctest) | test aplikasi masing-masing |
+| Test | `tests/` (18 suite ctest) | test aplikasi masing-masing |
 | Dokumen utama | `Foundation.md`, `Plan.md` | `Developer.md`, `docs/API.md` |
 
 ---
@@ -75,6 +75,8 @@ dan otomatis terpasang ke `nxc-sdk/inc/nxc/` (daftar statis:
 | `<nxc/Keyboard.h>` | keyboard & input: `KeyEvent`, key mapping, modifier, input context |
 | `<nxc/Shortcut.h>` | shortcut terpusat: scope Application/Window/Context, chord, konflik, enable/disable |
 | `<nxc/TerminalProcess.h>` | process bridge terminal: shell OS (cmd/powershell/pwsh/sh), stdin/stdout/stderr, dir, env |
+| `<nxc/Router.h>` | routing halaman: `Router` (pola `/produk/:id`, back/forward), `Route`, `Page` (onEnter/onLeave, keepAlive), `Link` — SDK ≥ 0.3.0 |
+| `<nxc/NavigationView.h>` | sidebar navigasi Fluent + Router, item aktif otomatis, tombol Back, mode ciut — SDK ≥ 0.3.0 |
 | `<nxc/Terminal.h>` | widget terminal satu area (ketik langsung, PTY + emulator VT: warna, Tab, vim; Ctrl+C/Ctrl+V/Ctrl+L) di atas `TerminalProcess` |
 | `<nxc/Settings.h>` | preferensi tersimpan (QSettings INI): tema, `closeToTray`, dsb. |
 | `<nxc/Theme.h>` | hot-swap tema gelap/terang + ikon (`appIcon`, `contextIcon`, glyph Fluent) |

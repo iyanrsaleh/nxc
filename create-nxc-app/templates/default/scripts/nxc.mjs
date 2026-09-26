@@ -10,6 +10,8 @@
 //
 // Identitas (version, productName, description, author, nxc.icon,
 // nxc.shortcutName, nxc.artifactName) dibaca dari package.json.
+// Ada runtime/package.json (dependensi skrip Node)? -> npm install otomatis
+// di runtime/ sebelum build bila perlu.
 //
 // Di balik layar memakai CMakePresets.json project ini (path SDK NXC + Qt
 // ada di sana). Windows: satu folder build multi-konfigurasi (Visual Studio);
@@ -64,7 +66,29 @@ function executable(config) {
     return path.join(outputDir(config), isWindows ? `${target}.exe` : target);
 }
 
+// Dependensi npm skrip runtime (nxc::NodeRuntime): runtime/package.json,
+// TERPISAH dari package.json build ini. node_modules di runtime/ ikut disalin
+// ke sebelah exe (dan installer), jadi require() tetap jalan di komputer
+// pengguna. Hanya dijalankan bila belum terpasang atau package.json/lock
+// lebih baru dari instalasi terakhir.
+function installRuntimeDependencies() {
+    const dir = path.join(root, 'runtime');
+    const manifest = path.join(dir, 'package.json');
+    if (!fs.existsSync(manifest))
+        return;
+    const marker = path.join(dir, 'node_modules', '.package-lock.json'); // ditulis npm >= 7
+    const mtime = (file) => (fs.existsSync(file) ? fs.statSync(file).mtimeMs : 0);
+    const changed = Math.max(mtime(manifest), mtime(path.join(dir, 'package-lock.json')));
+    if (fs.existsSync(marker) && mtime(marker) >= changed) {
+        console.log('[nxc] dependensi runtime/ sudah terpasang');
+        return;
+    }
+    // npm di Windows = npm.cmd -> butuh shell.
+    run('npm', ['install', '--omit=dev', '--no-audit', '--no-fund'], { cwd: dir, shell: isWindows });
+}
+
 function build(config) {
+    installRuntimeDependencies();
     // Configure hanya bila belum pernah (CMake sendiri mengulang configure
     // otomatis saat CMakeLists.txt berubah).
     if (!fs.existsSync(path.join(buildDir(config), 'CMakeCache.txt')))

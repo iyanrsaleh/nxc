@@ -23,6 +23,10 @@ int main(int argc, char* argv[]) {
     // Ikon window, title bar, dan tray (nxc.icon di package.json).
     QApplication::setWindowIcon(QIcon(QStringLiteral(":/app/icon")));
 #endif
-    app.setWindowFactory([] { return new MainWindow; });
+    // --route /produk/42 : buka langsung di halaman tertentu (deep link).
+    const QStringList args = QCoreApplication::arguments();
+    const qsizetype at = args.indexOf(QStringLiteral("--route"));
+    const QString startRoute = (at >= 0 && at + 1 < args.size()) ? args.at(at + 1) : QString();
+    app.setWindowFactory([startRoute] { return new MainWindow(startRoute); });
     return app.exec();
 }
