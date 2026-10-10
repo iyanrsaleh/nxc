@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id" data-lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NXC — SDK Aplikasi Desktop Native C++ (Qt 6)</title>
+  <meta name="description" content="SDK untuk membangun aplikasi desktop native C++ di atas Qt 6 Widgets — satu binary ringan dengan fondasi aplikasi siap pakai." />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="#top">
+        <img src="assets/nxc-logo.png" alt="NXC" width="36" height="36" />
+        <span class="brand-text">NXC</span>
+      </a>
+
+      <nav class="nav" id="nav">
+        <a href="#features" data-i18n="nav.features">Fitur</a>
+        <a href="#philosophy" data-i18n="nav.philosophy">Filosofi</a>
+        <a href="#runtime" data-i18n="nav.runtime">Runtime</a>
+        <a href="#code" data-i18n="nav.code">Kode</a>
+        <a href="#quickstart" data-i18n="nav.quickstart">Mulai Cepat</a>
+        <a href="#modules" data-i18n="nav.modules">Modul</a>
+        <a href="#sdk" data-i18n="nav.download">Unduh</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang-btn="id" class="active">ID</button>
+          <button type="button" data-lang-btn="en">EN</button>
+        </div>
+        <a class="btn btn-ghost" href="https://github.com/sponsors/iyanrsaleh" target="_blank" rel="noopener" style="color: #db61a2; border-color: #db61a2; display: inline-flex; align-items: center; gap: 6px;">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.565 20.565 0 008 13.393a20.561 20.561 0 003.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.75.75 0 01-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5zM8 14.25l-.345.666-.002-.001-.006-.003-.018-.01a7.643 7.643 0 01-.31-.17 22.075 22.075 0 01-3.434-2.414C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.045 5.231-3.885 6.818a22.08 22.08 0 01-3.744 2.584l-.018.01-.006.003h-.002L8 14.25z"></path></svg>
+          Sponsor
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/iyanrsaleh/nxc" target="_blank" rel="noopener">
+          <span data-i18n="nav.repo">Repositori</span>
+        </a>
+        <a class="btn btn-primary" href="#sdk" data-i18n="nav.downloadCta">Unduh SDK</a>
+        <button type="button" class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <span class="badge">
+            <span class="dot"></span>
+            <span data-i18n="hero.badge">SDK 0.3.x · Windows &amp; Linux · Qt 6.8 · C++</span>
+          </span>
+          <h1 data-i18n="hero.title">Aplikasi desktop native, tanpa Electron.</h1>
+          <p class="lead" data-i18n="hero.lead">
+            NXC adalah SDK C++ di atas Qt 6 Widgets: satu binary ringan dengan
+            fondasi aplikasi siap pakai — window Fluent, terminal sungguhan,
+            tema, shortcut, database, dan runtime bridge.
+          </p>
+          <div class="hero-cta">
+            <a class="btn btn-primary btn-lg" href="#quickstart" data-i18n="hero.ctaPrimary">Mulai dalam 1 menit</a>
+            <a class="btn btn-outline btn-lg" href="#code" data-i18n="hero.ctaSecondary">Lihat kode</a>
+          </div>
+          <ul class="hero-stats">
+            <li><strong>22</strong><span data-i18n="hero.statHeaders">header publik</span></li>
+            <li><strong>3</strong><span data-i18n="hero.statRuntime">runtime bridge</span></li>
+            <li><strong>18/18</strong><span data-i18n="hero.statTests">suite test lolos</span></li>
+          </ul>
+        </div>
+
+        <div class="hero-visual">
+          <div class="window-mock">
+            <div class="window-titlebar">
+              <img src="assets/nxc-logo.png" alt="" width="16" height="16" />
+              <span data-i18n="hero.windowTitle">NXC Qt6 — Jendela 1</span>
+              <div class="window-buttons" aria-hidden="true">
+                <span class="wb-min"></span><span class="wb-max"></span><span class="wb-close"></span>
+              </div>
+            </div>
+            <div class="window-menu">
+              <span data-i18n="hero.menuFile">File</span>
+              <span data-i18n="hero.menuView">View</span>
+              <span>Runtime</span>
+              <span data-i18n="hero.menuHelp">Help</span>
+            </div>
+            <div class="window-body">
+              <h3 data-i18n="hero.bodyTitle">Window management native C++ (Qt 6)</h3>
+              <p data-i18n="hero.bodyText">
+                Title bar, border, dan tombol window digambar sendiri — drag,
+                double-click maximize, resize dari tepi.
+              </p>
+              <div class="window-log">
+                <span class="log-time">[22:08:58]</span>
+                <span data-i18n="hero.logLine">Jendela 1 siap.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platforms -->
+    <section class="platform-strip" id="platforms">
+      <div class="container platform-inner">
+        <span class="platform-label" data-i18n="platform.label">Berjalan di</span>
+        <div class="platform-chips">
+          <span class="platform-chip platform-chip-primary">
+            <span class="material-symbols-rounded" aria-hidden="true">desktop_windows</span>
+            <span>Windows</span>
+            <em data-i18n="platform.win.note">SDK siap pakai</em>
+          </span>
+          <span class="platform-chip platform-chip-primary">
+            <span class="material-symbols-rounded" aria-hidden="true">terminal</span>
+            <span>Linux (Ubuntu)</span>
+            <em data-i18n="platform.linux.note">SDK siap pakai</em>
+          </span>
+          <span class="platform-chip">
+            <span class="material-symbols-rounded" aria-hidden="true">laptop_mac</span>
+            <span>macOS</span>
+            <em data-i18n="platform.mac.note">dari source</em>
+          </span>
+        </div>
+        <p class="platform-note" data-i18n="platform.note">
+          Distribusi SDK siap pakai: <strong>Windows x64</strong> dan
+          <strong>Linux x64</strong> (Qt 6.8). macOS berjalan dari source yang sama —
+          diuji otomatis di CI Windows + Ubuntu.
+        </p>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" id="features">
+      <div class="container">
+        <header class="section-head">
+          <h2 data-i18n="features.title">Semua yang dibutuhkan aplikasi desktop</h2>
+          <p data-i18n="features.subtitle">
+            NXC menyediakan mekanismenya; Anda menentukan isi aplikasinya.
+          </p>
+        </header>
+
+        <div class="grid grid-3">
+          <article class="card">
+            <div class="card-icon" aria-hidden="true"><span class="material-symbols-rounded">window</span></div>
+            <h3 data-i18n="features.window.title">Window Fluent</h3>
+            <p data-i18n="features.window.text">
+              Frameless ala Windows 11: title bar kustom, resize dari tepi,
+              sudut membulat, dan Mica — tanpa garis tepi.
+            </p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true"><span class="material-symbols-rounded">keyboard</span></div>
+            <h3 data-i18n="features.input.title">Keyboard &amp; Shortcut</h3>
+            <p data-i18n="features.input.text">
+              Shortcut terpusat dengan scope Application/Window/Context, chord
+              (Ctrl+K, Ctrl+S), deteksi konflik, dan enable/disable.
+            </p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true"><span class="material-symbols-rounded">terminal</span></div>
+            <h3 data-i18n="features.terminal.title">Terminal sungguhan</h3>
+            <p data-i18n="features.terminal.text">
+              PTY + emulator VT: ketik langsung, warna, Tab-completion, saran
+              PowerShell 7, dan vim — seperti terminal asli.
+            </p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true"><span class="material-symbols-rounded">palette</span></div>
+            <h3 data-i18n="features.theme.title">Tema &amp; preferensi</h3>
+            <p data-i18n="features.theme.text">
+              Tema gelap/terang hot-swap, preferensi tersimpan otomatis, dan
+              tray icon dengan menu standar.
+            </p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true"><span class="material-symbols-rounded">route</span></div>
+            <h3 data-i18n="features.router.title">Routing halaman</h3>
+            <p data-i18n="features.router.text">
+              Router bergaya web — rute <code>/produk/:id</code>, query,
+              back/forward — plus sidebar navigasi Fluent.
+            </p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true"><span class="material-symbols-rounded">hub</span></div>
+            <h3 data-i18n="features.runtime.title">Runtime bridge</h3>
+            <p data-i18n="features.runtime.text">
+              Panggil JavaScript in-process, Node.js, atau Python lewat satu
+              protokol pesan JSON yang sama.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Philosophy -->
+    <section class="section section-alt" id="philosophy">
+      <div class="container">
+        <header class="section-head">
+          <h2 data-i18n="philo.title">NXC menyediakan HOW. Anda menentukan WHAT.</h2>
+          <p data-i18n="philo.subtitle">
+            Satu fondasi desktop untuk banyak aplikasi — mekanisme disediakan
+            NXC, isi dan tujuan aplikasi tetap milik Anda.
+          </p>
+        </header>
+
+        <div class="philo-layout">
+          <div class="stack-diagram" aria-hidden="true">
+            <div class="stack-layer layer-app">
+              <span data-i18n="philo.layer.app">Aplikasi Anda</span>
+              <small data-i18n="philo.layer.appSub">UI · Logic · Business</small>
+            </div>
+            <div class="stack-layer layer-runtime">
+              <span data-i18n="philo.layer.runtime">NXC Runtime Layer</span>
+              <small>Bridge · Lifecycle · IPC</small>
+            </div>
+            <div class="stack-layer layer-core">
+              <span data-i18n="philo.layer.core">NXC Core</span>
+              <small data-i18n="philo.layer.coreSub">Window · Menu · Keyboard · Shortcut · Terminal · Theme · Settings · Tray</small>
+            </div>
+            <div class="stack-layer layer-qt">
+              <span>Qt 6</span>
+            </div>
+            <div class="stack-layer layer-os">
+              <span data-i18n="philo.layer.os">Sistem Operasi</span>
+            </div>
+          </div>
+
+          <div class="philo-cols">
+            <div class="philo-col">
+              <h3 data-i18n="philo.how.title">NXC menyediakan (HOW)</h3>
+              <ul>
+                <li data-i18n="philo.how.1">Window &amp; title bar Fluent</li>
+                <li data-i18n="philo.how.2">Menu, context menu, dialog</li>
+                <li data-i18n="philo.how.3">Keyboard &amp; shortcut terpusat</li>
+                <li data-i18n="philo.how.4">Terminal + process bridge (PTY)</li>
+                <li data-i18n="philo.how.5">Theme, settings, tray, event bus</li>
+                <li data-i18n="philo.how.6">Routing halaman + sidebar</li>
+                <li data-i18n="philo.how.7">Runtime bridge opsional</li>
+              </ul>
+            </div>
+            <div class="philo-col philo-col-what">
+              <h3 data-i18n="philo.what.title">Anda menentukan (WHAT)</h3>
+              <ul>
+                <li data-i18n="philo.what.1">UI &amp; komposisi halaman</li>
+                <li data-i18n="philo.what.2">Logika bisnis &amp; alur aplikasi</li>
+                <li data-i18n="philo.what.3">Schema &amp; query database</li>
+                <li data-i18n="philo.what.4">Protokol &amp; isi pesan WebSocket</li>
+                <li data-i18n="philo.what.5">Backend, autentikasi, otorisasi</li>
+                <li data-i18n="philo.what.6">Workflow AI &amp; pemrosesan data</li>
+                <li data-i18n="philo.what.7">Model bisnis &amp; produk akhir</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Runtime -->
+    <section class="section" id="runtime">
+      <div class="container">
+        <header class="section-head">
+          <h2 data-i18n="runtime.title">Runtime opsional, sesuai kebutuhan</h2>
+          <p data-i18n="runtime.subtitle">
+            Mulai murni C++/Qt, lalu tambahkan JavaScript, Node.js, atau Python
+            hanya bila aplikasi Anda memerlukannya.
+          </p>
+        </header>
+
+        <div class="grid grid-4">
+          <article class="card runtime-card">
+            <h3 data-i18n="runtime.cpp.title">C++ / Qt</h3>
+            <p data-i18n="runtime.cpp.text">Core native — wajib ada di setiap aplikasi NXC.</p>
+          </article>
+          <article class="card runtime-card">
+            <h3>+ JavaScript</h3>
+            <p data-i18n="runtime.js.text">In-process (QJSEngine) untuk scripting ringan, plugin, dan automation.</p>
+          </article>
+          <article class="card runtime-card">
+            <h3>+ Node.js</h3>
+            <p data-i18n="runtime.node.text">Out-of-process untuk ekosistem npm, tooling, dan layanan.</p>
+          </article>
+          <article class="card runtime-card">
+            <h3>+ Python</h3>
+            <p data-i18n="runtime.py.text">Untuk AI, machine learning, data, dan komputasi ilmiah.</p>
+          </article>
+        </div>
+
+        <div class="modules-note">
+          <span data-i18n="runtime.note">Bisa juga dipakai semuanya sekaligus — satu protokol pesan JSON yang sama.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Code -->
+    <section class="section section-alt" id="code">
+      <div class="container">
+        <header class="section-head">
+          <h2 data-i18n="code.title">Sedikit kode, aplikasi jadi</h2>
+          <p data-i18n="code.subtitle">
+            Turunkan <code>nxc::Window</code>, serahkan pabriknya ke
+            <code>nxc::Application</code>.
+          </p>
+        </header>
+
+        <div class="code-layout">
+          <div class="code-panel">
+            <div class="code-tabs" role="tablist">
+              <button type="button" class="code-tab active" data-tab="main" role="tab">main.cpp</button>
+              <button type="button" class="code-tab" data-tab="window" role="tab">mainwindow.cpp</button>
+              <button type="button" class="code-tab" data-tab="cmake" role="tab">CMakeLists.txt</button>
+            </div>
+            <pre class="code-block" data-panel="main"><code><span class="c-pre">#include</span> <span class="c-str">&lt;nxc/Application.h&gt;</span>
+<span class="c-pre">#include</span> <span class="c-str">&lt;nxc/Window.h&gt;</span>
+
+<span class="c-key">int</span> <span class="c-fn">main</span>(<span class="c-key">int</span> argc, <span class="c-key">char</span>* argv[]) {
+    <span class="c-type">nxc::Application</span> app(argc, argv);
+    app.<span class="c-fn">setApplicationName</span>(<span class="c-str">"Aplikasi Saya"</span>);
+    app.<span class="c-fn">setWindowFactory</span>([] { <span class="c-key">return</span> <span class="c-key">new</span> MyWindow; });
+    <span class="c-key">return</span> app.<span class="c-fn">exec</span>();
+}</code></pre>
+            <pre class="code-block hidden" data-panel="window"><code><span class="c-pre">#include</span> <span class="c-str">&lt;nxc/Window.h&gt;</span>
+
+<span class="c-key">class</span> <span class="c-type">MyWindow</span> : <span class="c-key">public</span> <span class="c-type">nxc::Window</span> {
+<span class="c-key">public</span>:
+    <span class="c-fn">MyWindow</span>() {
+        <span class="c-fn">setTitle</span>(<span class="c-str">"Aplikasi Saya"</span>);
+        <span class="c-fn">setContent</span>(<span class="c-key">new</span> MyContentWidget(<span class="c-key">this</span>));
+
+        <span class="c-key">auto</span>* file = <span class="c-fn">menuBar</span>()-&gt;<span class="c-fn">addMenu</span>(<span class="c-str">"File"</span>);
+        file-&gt;<span class="c-fn">addAction</span>(<span class="c-str">"Keluar"</span>, <span class="c-key">this</span>, &amp;QWidget::close);
+    }
+};</code></pre>
+            <pre class="code-block hidden" data-panel="cmake"><code><span class="c-fn">find_package</span>(nxc CONFIG REQUIRED)
+<span class="c-fn">target_link_libraries</span>(myapp PRIVATE nxc::nxc Qt6::Widgets)
+<span class="c-fn">nxc_deploy</span>(myapp)   <span class="c-com"># salin nxc.dll + DLL Qt setelah build</span></code></pre>
+          </div>
+
+          <ul class="code-points">
+            <li>
+              <h4 data-i18n="code.p1.title">Satu binary ringan</h4>
+              <p data-i18n="code.p1.text">Jauh lebih kecil dari Electron — tanpa Chromium, tanpa Node di dalam paket.</p>
+            </li>
+            <li>
+              <h4 data-i18n="code.p2.title">API publik yang stabil</h4>
+              <p data-i18n="code.p2.text">22 header di <code>namespace nxc</code>, kompatibilitas <code>SameMajorVersion</code>.</p>
+            </li>
+            <li>
+              <h4 data-i18n="code.p3.title">Deploy otomatis</h4>
+              <p data-i18n="code.p3.text"><code>nxc_deploy()</code> menyalin DLL yang dibutuhkan — exe langsung jalan.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick start -->
+    <section class="section" id="quickstart">
+      <div class="container">
+        <header class="section-head">
+          <h2 data-i18n="qs.title">Mulai cepat</h2>
+          <p data-i18n="qs.subtitle">Satu perintah membuat project siap build.</p>
+        </header>
+
+        <div class="quickstart">
+          <div class="qs-terminal">
+            <div class="qs-bar">
+              <span class="qs-dot red"></span><span class="qs-dot yellow"></span><span class="qs-dot green"></span>
+              <span class="qs-bar-title" data-i18n="qs.terminalTitle">Terminal</span>
+            </div>
+            <div class="qs-body" id="qsBody">
+              <div class="qs-line"><span class="qs-prompt">$</span> npm create nxc-app@latest MyApp</div>
+              <div class="qs-line"><span class="qs-prompt">$</span> cd MyApp</div>
+              <div class="qs-line"><span class="qs-prompt">$</span> npm run dev   <span class="qs-comment" data-i18n="qs.commentDev"># build Debug + jalankan</span></div>
+              <div class="qs-line"><span class="qs-prompt">$</span> npm run dist  <span class="qs-comment" data-i18n="qs.commentDist"># installer / paket siap bagi</span></div>
+            </div>
+          </div>
+
+          <div class="qs-steps">
+            <ol>
+              <li>
+                <h4 data-i18n="qs.s1.title">Prasyarat</h4>
+                <p data-i18n="qs.s1.text">Qt 6.8 (kit MSVC 2022 64-bit), Visual Studio 2022 Build Tools, CMake ≥ 3.21, Node.js ≥ 18.</p>
+              </li>
+              <li>
+                <h4 data-i18n="qs.s2.title">Scaffold</h4>
+                <p data-i18n="qs.s2.text">Perintah membuat CMakeLists, preset, dan struktur <code>src/</code>, lalu mengunduh SDK dari Releases.</p>
+              </li>
+              <li>
+                <h4 data-i18n="qs.s3.title">Build &amp; jalankan</h4>
+                <p data-i18n="qs.s3.text"><code>npm run dev</code> build Debug dan langsung menjalankan aplikasi.</p>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modules -->
+    <section class="section section-alt" id="modules">
+      <div class="container">
+        <header class="section-head">
+          <h2 data-i18n="modules.title">Modul opsional</h2>
+          <p data-i18n="modules.subtitle">
+            Library terpisah — hanya ikut dibawa kalau aplikasi Anda memakainya.
+          </p>
+        </header>
+
+        <div class="grid grid-2">
+          <article class="card card-module">
+            <div class="card-module-head">
+              <span class="module-tag">nxc_database.dll</span>
+              <h3 data-i18n="modules.db.title">Database</h3>
+            </div>
+            <p data-i18n="modules.db.text">
+              SQLite (atau driver lain), koneksi per thread, query async,
+              transaksi, dan migrasi <code>NNN_nama.sql</code>.
+            </p>
+            <code class="module-include">&lt;nxc/Database.h&gt;</code>
+          </article>
+          <article class="card card-module">
+            <div class="card-module-head">
+              <span class="module-tag">nxc_websocket.dll</span>
+              <h3 data-i18n="modules.ws.title">WebSocket</h3>
+            </div>
+            <p data-i18n="modules.ws.text">
+              Client dengan reconnect + backoff eksponensial, antrean pesan saat
+              offline, ping keepalive, dan helper JSON.
+            </p>
+            <code class="module-include">&lt;nxc/WebSocket.h&gt;</code>
+          </article>
+        </div>
+
+        <div class="modules-note">
+          <code>find_package(nxc CONFIG REQUIRED COMPONENTS Database WebSocket)</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download / SDK -->
+    <section class="section" id="sdk">
+      <div class="container">
+        <header class="section-head">
+          <h2 data-i18n="sdk.title">Unduh SDK</h2>
+          <p data-i18n="sdk.subtitle">
+            SDK dibagikan sebagai aset rilis GitHub. Source NXC tidak dipublikasikan.
+          </p>
+        </header>
+
+        <div class="grid grid-3">
+          <article class="card card-download">
+            <h3 data-i18n="sdk.release.title">Rilis terbaru — Windows &amp; Linux</h3>
+            <p data-i18n="sdk.release.text">
+              Aset <code>nxc-sdk-&lt;versi&gt;-qt&lt;qt&gt;-windows.tar.gz</code> (Windows x64,
+              Debug + Release) dan <code>nxc-sdk-&lt;versi&gt;-qt&lt;qt&gt;-linux.tar.gz</code>
+              (Linux x64). macOS dibangun dari source yang sama (lihat repositori).
+            </p>
+            <a class="btn btn-primary" href="https://github.com/iyanrsaleh/nxc/releases" target="_blank" rel="noopener" data-i18n="sdk.release.cta">Buka Releases</a>
+          </article>
+          <article class="card card-download">
+            <h3 data-i18n="sdk.npm.title">Scaffolder npm</h3>
+            <p data-i18n="sdk.npm.text">
+              Paket <code>create-nxc-app</code> tanpa dependency — membuat
+              project dan mengunduh SDK otomatis.
+            </p>
+            <a class="btn btn-outline" href="https://www.npmjs.com/package/create-nxc-app" target="_blank" rel="noopener" data-i18n="sdk.npm.cta">Lihat di npm</a>
+          </article>
+          <article class="card card-download">
+            <h3 data-i18n="sdk.docs.title">Dokumentasi</h3>
+            <p data-i18n="sdk.docs.text">
+              Referensi per header (<code>docs/API.md</code>) dan panduan
+              developer (<code>docs/Developer.md</code>).
+            </p>
+            <a class="btn btn-outline" href="https://github.com/iyanrsaleh/nxc" target="_blank" rel="noopener" data-i18n="sdk.docs.cta">Lihat di GitHub</a>
+          </article>
+        </div>
+
+        <div class="cta-band">
+          <div>
+            <h3 data-i18n="cta.title">Siap membangun aplikasi desktop native?</h3>
+            <p data-i18n="cta.text">Mulai dari template, build, lalu sesuaikan dengan kebutuhan Anda.</p>
+          </div>
+          <a class="btn btn-primary btn-lg" href="https://github.com/iyanrsaleh/nxc" target="_blank" rel="noopener" data-i18n="cta.button">Mulai sekarang</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="assets/nxc-logo.png" alt="NXC" width="28" height="28" />
+        <span>NXC</span>
+      </div>
+      <p class="footer-note" data-i18n="footer.note">
+        SDK proprietary (UNLICENSED). Qt 6 di bawah LGPLv3, Fluent System Icons di bawah MIT.
+      </p>
+      <nav class="footer-nav">
+        <a href="https://github.com/iyanrsaleh/nxc" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.npmjs.com/package/create-nxc-app" target="_blank" rel="noopener">npm</a>
+        <a href="#top" data-i18n="footer.top">Ke atas</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="index.js"></script>
+</body>
+</html>
